@@ -24,6 +24,7 @@ class AuthController extends Controller
     */
     public function login(AuthLoginRequest $request){
         $input = $request->validated();
+
         $token =  $this->authService->login($input['email'], $input['password']);
 
         return (new UserResource(auth()->user()))->additional($token);
