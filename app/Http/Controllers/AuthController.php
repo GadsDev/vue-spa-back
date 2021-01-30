@@ -7,6 +7,7 @@ use App\Services\AuthService;
 use App\Http\Resources\UserResource;
 use App\Http\Requests\AuthLoginRequest;
 use App\Http\Requests\AuthRegisterRequest;
+use App\Http\Requests\AuthVerifyEmailRequest;
 
 class AuthController extends Controller
 {
@@ -31,6 +32,11 @@ class AuthController extends Controller
         return (new UserResource(auth()->user()))->additional($token);
     }
 
+    /**
+     * @param  AuthRegisterRequest $request
+     * @return UserResource
+     * @throws HasBeenTakenException
+    */
     public function register(AuthRegisterRequest $request){
        $input = $request->validated();
 
@@ -43,4 +49,16 @@ class AuthController extends Controller
 
        return (new UserResource($user));
     }
+
+    /**
+     * @param  AuthVerifyEmailRequest $request
+     * @return UserResource
+     * @throws VerifyEmailTokenInvalidException
+    */
+    public function verifyEmail(AuthVerifyEmailRequest $request){
+        $input = $request->validated();
+
+        return $this->authService->verifyEmail($input['token']);
+
+     }
 }
