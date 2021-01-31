@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\User;
+use App\PasswordReset;
 use Illuminate\Support\Str;
 use App\Events\UserRegistered;
 use App\Exceptions\LoginInvalidException;
@@ -33,12 +34,12 @@ class AuthService
         if (!empty($user)) {
             throw new UserHasBeenTakenException();
         }
-        $userPassword = bcrypt($password ?? Str::random(10));
+
         $user = User::create([
             'first_name' => $first_name,
             'last_name' => $last_name,
             'email' => $email,
-            'password' => $password,
+            'password' =>  bcrypt($password ?? Str::random(10)),
             'confirmation_token' => Str::random(60),
         ]);
 
@@ -59,5 +60,16 @@ class AuthService
         $user->save();
 
         return $user;
+    }
+
+    public function forgotPassword(string $email){
+        $user = User::where('email', $email)->firstOrFail();
+
+        PasswordReset::create([
+            'email' => $user->email,
+            'token' => Str::random(60)
+        ]);
+
+        return '';
     }
 }
