@@ -22,6 +22,7 @@ Route::prefix('v1')->group(function () {
     Route::prefix('todos')->group(function () {
 
         Route::get('/', [TodoController::class, 'index']);
+        Route::post('/', [TodoController::class, 'store']);
 
     });
 
