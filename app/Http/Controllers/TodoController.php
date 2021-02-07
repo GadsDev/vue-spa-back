@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Http\Resources\TodoResource;
 use App\Http\Requests\TodoStoreRequest;
 use App\Http\Requests\TodoUpdateRequest;
+use App\Http\Resources\TodoTaskResource;
+use App\Http\Requests\TodoTaskStoreRequest;
 
 class TodoController extends Controller
 {
@@ -44,6 +46,14 @@ class TodoController extends Controller
         $todo->load('tasks');
 
         return new TodoResource($todo);
+    }
+
+    public function addTask(Todo $todo, TodoTaskStoreRequest $request) {
+        $input = $request->validated();
+
+        $todoTask = $todo->tasks()->create($input);
+
+        return new TodoTaskResource($todoTask);
     }
 
 }
