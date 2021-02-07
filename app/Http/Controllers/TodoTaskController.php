@@ -21,4 +21,8 @@ class TodoTaskController extends Controller
 
         return new TodoTaskResource($todoTask);
     }
+
+    public function destroy(TodoTask $todoTask){
+        $todoTask->delete();
+    }
 }
