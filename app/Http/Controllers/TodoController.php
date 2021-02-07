@@ -39,4 +39,11 @@ class TodoController extends Controller
         $todo->delete();
     }
 
+    public function show(Todo $todo) {
+        // Get tasks Relation to pass in TodoResource resource
+        $todo->load('tasks');
+
+        return new TodoResource($todo);
+    }
+
 }
