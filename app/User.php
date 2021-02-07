@@ -39,7 +39,7 @@ class User extends Authenticatable implements JWTSubject
     ];
 
     public function todos(){
-        return $this->HasMany(Todo::class);
+        return $this->HasMany(Todo::class)->latest();
     }
 
      /**
